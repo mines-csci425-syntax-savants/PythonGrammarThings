@@ -76,13 +76,21 @@ def group_list_by_delim(list, delim):
             new_list = []
     return whole_list
 
+
+def read_file(path_name):
+    with open(path_name, "r") as f:
+        lines = f.read()
+    return lines
+
+
 '''
 Takes a CFG input file and generates a CFG object.
-@param List<String> lines : File content.
+@param String path_name : The path to the file containing CFG info.
 @returns CFG : CFG object
 '''
-def process_file_to_production_rules(lines):
+def process_file_to_production_rules(path_name):
     cfg = CFG()
+    lines = read_file(path_name)
     lines = lines.split()
     for i, token in enumerate(lines):
         # get the production rule mappings
@@ -122,10 +130,8 @@ def process_file_to_production_rules(lines):
 
 def main():
     input = "1"
-    with open(input, "r") as f:
-        lines = f.read()
 
-    cfg = process_file_to_production_rules(lines)
+    cfg = process_file_to_production_rules(input)
     cfg.print()
 
 if __name__ == "__main__":
