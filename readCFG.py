@@ -48,7 +48,8 @@ class CFG:
         for NT in self.production_rules:
             rhs = self.production_rules[NT]
             for element in rhs:
-                print(f"({i})\t{NT} -> {" ".join(element)}")
+                # this was breaking for me, for whatever reason. since this isn't the main goal of the LGA, I just minorly changed it.
+                print(f"({i})\t{NT} -> {element}")
                 i += 1
 
         print(f"Grammar Start Symbol or Goal: {self.start}")
