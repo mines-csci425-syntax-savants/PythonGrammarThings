@@ -33,4 +33,25 @@ Gets the collection of terminal symbols that occur directly to the right of a no
 @returns Set<String> : the set of terminals.
 '''
 def followSet(cfg, NT):
-    pass
+    def follow_set_recursive(at: str, seen: set[str]):
+        if at in seen:
+            return set(), seen
+        
+        seen.add(at)
+        follow_set = set()
+        for n in cfg.production_rules:
+            for p in cfg.production_rules[n]:
+                for i in range(len(p)):
+                    if p[i] == at:
+                        after = p[i+1:]
+                        if len(after) > 0:
+                            g = firstSet(cfg, after)
+                            follow_set.update(g)
+                        
+                        if len(after) == 0 or len(cfg.terminals.union({"$"}).intersection(after)) == 0 and all(map(derivesToLambda, after)):
+                            g, _ = follow_set_recursive(n, seen)
+                            follow_set.update(g)
+        return follow_set, seen
+
+    result, _ = follow_set_recursive(NT, set())
+    return result
